@@ -25,7 +25,10 @@ and what you should write is the sayHi function that makes the code above work,
 
 
   //Code Here for first
-  
+var first = function(names, cb) {
+  if (typeof cb === "function")
+    return cb(names[0]);
+} 
 
 var names = ['Tyler', 'Cahlan', 'Ryan', 'Colt', 'Tyler', 'Blaine', 'Cahlan'];
 first(names, function(firstName){
@@ -40,6 +43,10 @@ first(names, function(firstName){
 
 
   //Code Here for last
+var last = function(names, cb) {
+  if (typeof cb === "function")
+    return cb(names[names.length-1]);
+}
 
 last(names, function(lastName){
   console.log('The last name in names is ' + lastName);
@@ -57,6 +64,14 @@ last(names, function(lastName){
 
 
   //Code Here for multiply
+function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+var multiply = function(a,b,cb) {
+  if (typeof cb === "function" && isNumeric(a) && isNumeric(b))
+    return cb(a*b);
+}
 
 multiply(4, 3, function(answer){
   console.log('The answer is ' + answer); //should console.log 12
@@ -73,6 +88,12 @@ multiply(4, 3, function(answer){
 
 
   //Code Here for contains
+var contains = function(names,name,cb) {
+  for (n in names) {
+    if (n === name)
+      return cb(true);
+  }
+}
 
 contains(names, 'Colt', function(result){
   if(result === true){
@@ -92,6 +113,18 @@ contains(names, 'Colt', function(result){
 
 
     //Code Here for uniq
+var uniq = function(names, cb) {
+  var a = [];
+  for ( i = 0; i < names.length; i++ ) {
+    if (a.indexOf(names[i]) < 0)
+      a.push(names[i]);
+  }
+  names.length = 0;
+  for ( i = 0; i < a.length; i++ ) {
+        names.push( a[i] );
+  }
+  return cb(names);
+};
 
 uniq(names, function(uniqArr){
   console.log('The new names array with all the duplicate items removed is ', uniqArr);
@@ -107,6 +140,11 @@ uniq(names, function(uniqArr){
 
 
     //Code Here for each
+var each = function(names, cb) {
+  for (var name in names) {
+    return cb(names[name], names.indexOf(name));
+  }
+};
 
 each(names, function(item, indice){
   console.log('The item in the ' + indice + ' position is ' + item)
